@@ -83,10 +83,12 @@ body{
   color:var(--md-on-background);
   line-height:1.5;
   min-height:100dvh;
-  overflow-x:hidden;
 }
 @media(min-width:768px){
-  body{height:auto;overflow:auto;display:block}
+  body{height:auto;overflow:auto;display:block;overflow-x:hidden}
+}
+@media(max-width:767px){
+  body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 }
 
 /* ═══════════════════════════════════════════
@@ -125,6 +127,7 @@ body::before{
   top:0;
   z-index:100;
   box-shadow:0 2px 8px rgba(0,0,0,.15);
+  flex-shrink:0;
 }
 .top-bar .icon{font-size:22px;line-height:1;justify-self:start}
 .top-bar h1{
@@ -416,7 +419,7 @@ body::before{
 /* ═══════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════ */
-@media(max-width:480px){
+@media(max-width:767px){
   .top-bar{padding:10px 14px}
   .top-bar h1{font-size:1rem}
   .top-bar .date-display{font-size:.7rem}
@@ -445,6 +448,22 @@ body::before{
   .popup-box{padding:20px 16px 18px;margin:12px}
   .popup-box h2{font-size:1.1rem}
   .popup-close{font-size:.8rem;padding:6px 18px}
+}
+@media(max-width:400px){
+  .top-bar{padding:6px 10px}
+  .top-bar h1{font-size:.85rem}
+  .top-bar .date-display{font-size:.6rem}
+  .hero{padding:4px 8px 0}
+  .verdict-card{padding:8px 10px 6px}
+  .verdict-icon{width:30px;height:30px}
+  .verdict-icon svg{width:30px;height:30px}
+  .verdict-big{font-size:1.6rem}
+  .verdict-label{font-size:.55rem}
+  .verdict-sub{font-size:.65rem}
+  .calendar-container{padding:0 6px}
+  .calendar-nav .month-label{font-size:.85rem}
+  .calendar-grid .day-cell{font-size:.65rem}
+  .calendar-legend{font-size:.55rem;gap:6px}
 }
 @media(min-width:768px){
   .hero{padding:18px 24px 8px;max-width:960px}
