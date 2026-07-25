@@ -81,9 +81,11 @@ body{
   font-family:var(--font-body);
   background:var(--md-background);
   color:var(--md-on-background);
-  line-height:1.5;
-  min-height:100dvh;
-  overflow-x:hidden;
+  line-height:1.4;
+  height:100dvh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
 }
 
 /* ═══════════════════════════════════════════
@@ -148,15 +150,16 @@ body::before{
   height:3px;
   background:linear-gradient(90deg,var(--md-gold-light),var(--md-gold),var(--md-gold-light));
   border:none;
+  flex-shrink:0;
 }
 
 /* ═══════════════════════════════════════════
    HERO — Verdict Card
    ═══════════════════════════════════════════ */
-.hero{padding:24px 16px 16px;max-width:600px;margin:0 auto}
+.hero{padding:10px 16px 4px;max-width:600px;margin:0 auto;flex-shrink:0}
 .verdict-card{
-  border-radius:var(--md-radius-lg);
-  padding:32px 20px 28px;
+  border-radius:var(--md-radius-md);
+  padding:16px 20px 14px;
   text-align:center;
   transition:all .5s cubic-bezier(.4,0,.2,1);
   position:relative;
@@ -184,31 +187,31 @@ body::before{
 .verdict-card.yes{background:var(--verdict-green-bg);color:var(--verdict-green-text);box-shadow:0 6px 24px rgba(27,107,74,.18)}
 .verdict-card.no{background:var(--verdict-red-bg);color:var(--verdict-red-text);box-shadow:0 6px 24px rgba(139,26,26,.18)}
 
-.verdict-icon{display:block;width:64px;height:64px;margin:0 auto 4px;transition:transform .4s cubic-bezier(.34,1.56,.64,1);color:var(--verdict-green)}
+.verdict-icon{display:block;width:44px;height:44px;margin:0 auto 2px;transition:transform .4s cubic-bezier(.34,1.56,.64,1);color:var(--verdict-green)}
 .verdict-card.no .verdict-icon{color:var(--verdict-red)}
 .verdict-card:hover .verdict-icon{transform:rotate(-6deg) scale(1.08)}
 
 .verdict-big{
   font-family:var(--font-display);
-  font-size:4.5rem;
+  font-size:2.8rem;
   font-weight:900;
   line-height:1;
   letter-spacing:-.04em;
-  margin:2px 0;
+  margin:0;
 }
 .verdict-label{
-  font-size:.85rem;
+  font-size:.7rem;
   font-weight:700;
   text-transform:uppercase;
-  letter-spacing:.12em;
-  margin-top:2px;
+  letter-spacing:.1em;
+  margin-top:0;
 }
-.verdict-sub{margin-top:12px;font-size:.9rem;opacity:.85;line-height:1.4}
+.verdict-sub{margin-top:4px;font-size:.78rem;opacity:.85;line-height:1.3}
 .verdict-sub .holiday-name{
   font-weight:700;
   display:block;
-  margin-top:4px;
-  font-size:1rem;
+  margin-top:2px;
+  font-size:.85rem;
 }
 
 /* Washing machine animation */
@@ -235,12 +238,13 @@ body::before{
 /* ═══════════════════════════════════════════
    CALENDAR
    ═══════════════════════════════════════════ */
-.calendar-container{max-width:600px;margin:0 auto 20px;padding:0 16px}
+.calendar-container{max-width:600px;margin:0 auto 4px;padding:0 16px;flex:1;display:flex;flex-direction:column;min-height:0}
 .calendar-nav{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:8px 4px 12px;
+  padding:4px 2px 6px;
+  flex-shrink:0;
 }
 .calendar-nav button{
   background:var(--md-surface);
@@ -257,19 +261,21 @@ body::before{
 .calendar-nav button:hover{background:var(--md-surface-variant)}
 .calendar-nav .month-label{font-family:var(--font-display);font-size:1.2rem;font-weight:700}
 
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;flex:1;align-content:stretch}
 .calendar-grid .day-name{
   text-align:center;
-  font-size:.65rem;
+  font-size:.7rem;
   font-weight:600;
   color:var(--md-on-surface-variant);
-  padding:6px 0;
+  padding:4px 0;
   text-transform:uppercase;
   letter-spacing:.04em;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .calendar-grid .day-cell{
-  aspect-ratio:1;
-  border-radius:var(--md-radius-sm);
+  border-radius:calc(var(--md-radius-sm) - 2px);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -277,7 +283,7 @@ body::before{
   font-weight:500;
   position:relative;
   cursor:default;
-  transition:all .12s;
+  transition:all .08s;
   background:transparent;
   color:var(--md-on-surface);
   user-select:none;
@@ -312,9 +318,10 @@ body::before{
 .calendar-legend{
   display:flex;
   gap:16px;
-  padding:10px 4px 2px;
+  padding:4px 2px 2px;
   font-size:.75rem;
   color:var(--md-on-surface-variant);
+  flex-shrink:0;
 }
 .calendar-legend span{display:flex;align-items:center;gap:6px}
 .calendar-legend .legend-red{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--md-tertiary-container)}
@@ -377,31 +384,28 @@ body::before{
   transition:opacity .12s;
 }
 .popup-box .popup-close:hover{opacity:.85}
+.cross-deco{text-align:center;padding:2px 0 0;font-size:1rem;color:var(--md-gold);letter-spacing:10px;opacity:.3;flex-shrink:0}
 
 /* ═══════════════════════════════════════════
    SOURCES
    ═══════════════════════════════════════════ */
-.sources{max-width:600px;margin:0 auto 16px;padding:0 16px;text-align:center}
-.sources p{font-size:.75rem;color:var(--md-on-surface-variant);line-height:1.6}
+.sources{max-width:600px;margin:0 auto 4px;padding:0 16px;text-align:center;flex-shrink:0}
+.sources p{font-size:.65rem;color:var(--md-on-surface-variant);line-height:1.5}
 .sources a{color:var(--md-primary);text-decoration:none;font-weight:600}
 .sources a:hover{text-decoration:underline}
-
-/* ═══════════════════════════════════════════
-   CROSS ICON DECORATION — gold
-   ═══════════════════════════════════════════ */
-.cross-deco{text-align:center;padding:6px 0 2px;font-size:1.2rem;color:var(--md-gold);letter-spacing:10px;opacity:.4}
 
 /* ═══════════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════════ */
 .footer{
-  padding:16px 16px 28px;
+  padding:6px 16px 10px;
   text-align:center;
-  font-size:.7rem;
+  font-size:.65rem;
   color:var(--md-outline);
   border-top:1px solid var(--md-outline-variant);
   max-width:600px;
   margin:0 auto;
+  flex-shrink:0;
 }
 .footer a{color:var(--md-primary);text-decoration:none}
 
@@ -409,7 +413,6 @@ body::before{
    RESPONSIVE
    ═══════════════════════════════════════════ */
 @media(max-width:480px){
-  body{display:flex;flex-direction:column;overflow:hidden;height:100dvh}
   .top-bar{padding:6px 12px}
   .top-bar h1{font-size:.9rem}
   .top-bar .icon{font-size:18px}
@@ -443,8 +446,11 @@ body::before{
   .popup-close{font-size:.8rem;padding:6px 18px}
 }
 @media(min-width:768px){
-  .hero{padding:32px 16px 20px}
-  .verdict-card{padding:44px 28px 32px}
+  .hero{padding:14px 16px 6px}
+  .verdict-card{padding:20px 28px 18px}
+  .verdict-icon{width:52px;height:52px}
+  .verdict-icon svg{width:52px;height:52px}
+  .verdict-big{font-size:3.2rem}
 }
 </style>
 </head>
@@ -461,7 +467,7 @@ body::before{
 <!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="verdict-card" id="verdictCard">
-    <span class="verdict-icon" id="verdictIcon"><svg viewBox="0 0 80 80" width="64" height="64" fill="currentColor"><rect x="6" y="18" width="68" height="54" rx="6"/><rect x="10" y="13" width="36" height="7" rx="2.5"/><circle cx="60" cy="16.5" r="4" opacity=".3"/><circle cx="72" cy="16.5" r="2.5" opacity=".2"/><circle cx="40" cy="47" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity=".3"/><rect x="14" y="72" width="8" height="4" rx="1.5"/><rect x="58" y="72" width="8" height="4" rx="1.5"/></svg></span>
+    <span class="verdict-icon" id="verdictIcon"><svg viewBox="0 0 80 80" width="44" height="44" fill="currentColor"><rect x="6" y="18" width="68" height="54" rx="6"/><rect x="10" y="13" width="36" height="7" rx="2.5"/><circle cx="60" cy="16.5" r="4" opacity=".3"/><circle cx="72" cy="16.5" r="2.5" opacity=".2"/><circle cx="40" cy="47" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity=".3"/><rect x="14" y="72" width="8" height="4" rx="1.5"/><rect x="58" y="72" width="8" height="4" rx="1.5"/></svg></span>
     <div class="verdict-big" id="verdictBig">—</div>
     <div class="verdict-label" id="verdictLabel">Проверувам...</div>
     <div class="verdict-sub" id="verdictSub">
@@ -709,7 +715,7 @@ function updateVerdict(){
       </div>`;
   }else{
     card.className='verdict-card yes';
-    icon.innerHTML='<svg viewBox="0 0 80 80" width="64" height="64" fill="currentColor"><rect x="6" y="18" width="68" height="54" rx="6"/><rect x="10" y="13" width="36" height="7" rx="2.5"/><circle cx="60" cy="16.5" r="4" opacity=".3"/><circle cx="72" cy="16.5" r="2.5" opacity=".2"/><circle cx="40" cy="47" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity=".3"/><rect x="14" y="72" width="8" height="4" rx="1.5"/><rect x="58" y="72" width="8" height="4" rx="1.5"/></svg>';
+    icon.innerHTML='<svg viewBox="0 0 80 80" width="44" height="44" fill="currentColor"><rect x="6" y="18" width="68" height="54" rx="6"/><rect x="10" y="13" width="36" height="7" rx="2.5"/><circle cx="60" cy="16.5" r="4" opacity=".3"/><circle cx="72" cy="16.5" r="2.5" opacity=".2"/><circle cx="40" cy="47" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity=".3"/><rect x="14" y="72" width="8" height="4" rx="1.5"/><rect x="58" y="72" width="8" height="4" rx="1.5"/></svg>';
     big.textContent='ДА!';
     label.textContent='СЛОБОДНО ПЕРИ';
     sub.innerHTML='<span style="opacity:.9">Денеска нема црвен ден. Машината чека!</span>';
