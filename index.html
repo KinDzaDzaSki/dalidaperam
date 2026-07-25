@@ -184,7 +184,8 @@ body::before{
 .verdict-card.yes{background:var(--verdict-green-bg);color:var(--verdict-green-text);box-shadow:0 6px 24px rgba(27,107,74,.18)}
 .verdict-card.no{background:var(--verdict-red-bg);color:var(--verdict-red-text);box-shadow:0 6px 24px rgba(139,26,26,.18)}
 
-.verdict-icon{display:block;font-size:64px;margin-bottom:4px;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.verdict-icon{display:block;width:64px;height:64px;margin:0 auto 4px;transition:transform .4s cubic-bezier(.34,1.56,.64,1);color:var(--verdict-green)}
+.verdict-card.no .verdict-icon{color:var(--verdict-red)}
 .verdict-card:hover .verdict-icon{transform:rotate(-6deg) scale(1.08)}
 
 .verdict-big{
@@ -408,11 +409,38 @@ body::before{
    RESPONSIVE
    ═══════════════════════════════════════════ */
 @media(max-width:480px){
-  .verdict-big{font-size:3rem}
-  .verdict-card{padding:24px 14px 20px}
-  .calendar-nav .month-label{font-size:1rem}
-  .top-bar h1{font-size:1rem}
-  .popup-box{padding:24px 18px 20px}
+  body{display:flex;flex-direction:column;overflow:hidden;height:100dvh}
+  .top-bar{padding:6px 12px}
+  .top-bar h1{font-size:.9rem}
+  .top-bar .icon{font-size:18px}
+  .top-bar .date-display{font-size:.65rem}
+  .gold-divider{height:2px}
+  .hero{padding:6px 12px 0}
+  .verdict-card{padding:10px 14px 10px;border-radius:var(--md-radius-md)}
+  .verdict-icon{width:36px;height:36px}
+  .verdict-icon svg{width:36px;height:36px}
+  .verdict-big{font-size:2rem}
+  .verdict-label{font-size:.6rem;letter-spacing:.08em;margin-top:0}
+  .verdict-sub{margin-top:4px;font-size:.7rem}
+  .verdict-sub .holiday-name{font-size:.75rem;margin-top:2px}
+  .wash-anim{display:none}
+  .sin-meter{display:none}
+  .calendar-container{margin:0 auto;padding:0 10px;flex:1;display:flex;flex-direction:column}
+  .calendar-nav{padding:3px 0 4px}
+  .calendar-nav button{padding:3px 10px;font-size:.85rem}
+  .calendar-nav .month-label{font-size:.85rem}
+  .calendar-grid{gap:1px}
+  .calendar-grid .day-name{font-size:.55rem;padding:3px 0}
+  .calendar-grid .day-cell{font-size:.7rem;aspect-ratio:auto;height:28px}
+  .calendar-grid .day-cell.red-day::after{font-size:.3rem;bottom:0;right:1px}
+  .calendar-legend{padding:4px 0 0;font-size:.6rem;gap:8px}
+  .calendar-legend .legend-red{width:8px;height:8px}
+  .cross-deco{display:none}
+  .sources{display:none}
+  .footer{display:none}
+  .popup-box{padding:20px 16px 18px}
+  .popup-box h2{font-size:1.1rem}
+  .popup-close{font-size:.8rem;padding:6px 18px}
 }
 @media(min-width:768px){
   .hero{padding:32px 16px 20px}
@@ -433,7 +461,7 @@ body::before{
 <!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="verdict-card" id="verdictCard">
-    <span class="verdict-icon" id="verdictIcon">🧺</span>
+    <span class="verdict-icon" id="verdictIcon"><svg viewBox="0 0 80 80" width="64" height="64" fill="currentColor"><rect x="6" y="18" width="68" height="54" rx="6"/><rect x="10" y="13" width="36" height="7" rx="2.5"/><circle cx="60" cy="16.5" r="4" opacity=".3"/><circle cx="72" cy="16.5" r="2.5" opacity=".2"/><circle cx="40" cy="47" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity=".3"/><rect x="14" y="72" width="8" height="4" rx="1.5"/><rect x="58" y="72" width="8" height="4" rx="1.5"/></svg></span>
     <div class="verdict-big" id="verdictBig">—</div>
     <div class="verdict-label" id="verdictLabel">Проверувам...</div>
     <div class="verdict-sub" id="verdictSub">
@@ -484,7 +512,7 @@ body::before{
 
 <!-- ═══ FOOTER ═══ -->
 <footer class="footer">
-  🧺 <strong>ДалиДаПерам</strong> — за совесни домаќини што не сакаат да грешат.<br>
+  🧼 <strong>ДалиДаПерам</strong> — за совесни домаќини што не сакаат да грешат.<br>
   <span style="font-size:.65rem">(и за оние што бараат изговор да не перат денеска)</span>
 </footer>
 
@@ -668,7 +696,7 @@ function updateVerdict(){
 
   if(red){
     card.className='verdict-card no';
-    icon.textContent='⛔';
+    icon.innerHTML='⛔';
     big.textContent='НЕ!';
     label.textContent='НЕ ПЕРИ ДЕНЕСКА';
     sub.innerHTML='<span style="opacity:.9">Денеска е <strong>црвен ден</strong> — перењето е греота!</span>';
@@ -681,7 +709,7 @@ function updateVerdict(){
       </div>`;
   }else{
     card.className='verdict-card yes';
-    icon.textContent='🧺';
+    icon.innerHTML='<svg viewBox="0 0 80 80" width="64" height="64" fill="currentColor"><rect x="6" y="18" width="68" height="54" rx="6"/><rect x="10" y="13" width="36" height="7" rx="2.5"/><circle cx="60" cy="16.5" r="4" opacity=".3"/><circle cx="72" cy="16.5" r="2.5" opacity=".2"/><circle cx="40" cy="47" r="18" fill="none" stroke="currentColor" stroke-width="3" opacity=".3"/><rect x="14" y="72" width="8" height="4" rx="1.5"/><rect x="58" y="72" width="8" height="4" rx="1.5"/></svg>';
     big.textContent='ДА!';
     label.textContent='СЛОБОДНО ПЕРИ';
     sub.innerHTML='<span style="opacity:.9">Денеска нема црвен ден. Машината чека!</span>';
