@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дали да перам? — Православен календар за машина за перење</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Macedonian:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   ORTHODOX CHRISTIAN THEME
+   Inspired by Orthodox church aesthetics:
+   deep burgundy, gold, icon-glow
+   ═══════════════════════════════════════════ */
+:root {
+  /* Warm parchment / stone background — like an Orthodox church fresco wall */
+  --md-background: #F5EDE0;
+  --md-on-background: #2A2420;
+
+  --md-surface: #FAF3E8;
+  --md-on-surface: #2A2420;
+  --md-surface-variant: #EDE0D0;
+  --md-on-surface-variant: #4A4238;
+
+  /* Orthodox burgundy — iconographic red, symbol of martyrdom & royalty */
+  --md-primary: #8B2A2A;
+  --md-on-primary: #FFFFFF;
+  --md-primary-container: #F0D0C0;
+  --md-on-primary-container: #3A0A0A;
+
+  /* Orthodox gold — the uncreated light of Tabor, divine glory */
+  --md-secondary: #B8860B;
+  --md-on-secondary: #FFFFFF;
+  --md-secondary-container: #F5E6C8;
+  --md-on-secondary-container: #2D2000;
+
+  /* Macedonian blue — from Ohrid frescoes, iconographic blue for Theotokos */
+  --md-tertiary: #2B5F8A;
+  --md-on-tertiary: #FFFFFF;
+  --md-tertiary-container: #C5D9EC;
+  --md-on-tertiary-container: #0A1C30;
+
+  --md-outline: #9A8A7A;
+  --md-outline-variant: #D6C8B8;
+
+  --md-elevation-1: 0 1px 3px rgba(0,0,0,.08);
+  --md-elevation-2: 0 3px 8px rgba(0,0,0,.12);
+  --md-elevation-3: 0 8px 24px rgba(139,42,42,.12);
+
+  --md-gold: #C9A94E;
+  --md-gold-dark: #8B6914;
+  --md-gold-light: #F0DFA0;
+
+  --md-radius-sm: 8px;
+  --md-radius-md: 16px;
+  --md-radius-lg: 24px;
+  --md-radius-xl: 28px;
+
+  --font-body: 'Noto Sans Macedonian', 'Inter', system-ui, sans-serif;
+  --font-display: 'Inter', 'Noto Sans Macedonian', system-ui, sans-serif;
+}
+
+/* ═══════════════════════════════════════════
+   VERDICT COLORS — softer, icon-inspired
+   ═══════════════════════════════════════════ */
+:root {
+  --verdict-green: #2D7A4A;
+  --verdict-green-bg: #D8EDE0;
+  --verdict-green-text: #0A2A18;
+  --verdict-red: #B53A3A;
+  --verdict-red-bg: #F5D8D8;
+  --verdict-red-text: #3A0A0A;
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--md-background);
+  color:var(--md-on-background);
+  line-height:1.5;
+  min-height:100dvh;
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════════════════════
+   BYZANTINE PATTERN BACKGROUND
+   Subtle Orthodox cross pattern overlay
+   ═══════════════════════════════════════════ */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5v50M5 30h50' stroke='%238B2A2A' stroke-width='.5'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%238B2A2A' stroke-width='.4'/%3E%3Ccircle cx='30' cy='30' r='3' fill='%238B2A2A' opacity='.3'/%3E%3C/svg%3E");
+  background-size:48px 48px;
+}
+
+/* Ensure content sits above the pattern */
+.top-bar, .hero, .calendar-container, .cross-deco, .sources, .footer{
+  position:relative;
+  z-index:1;
+}
+
+/* ═══════════════════════════════════════════
+   TOP BAR — Orthodox style, centered title
+   ═══════════════════════════════════════════ */
+.top-bar{
+  background:var(--md-primary);
+  color:var(--md-on-primary);
+  padding:14px 16px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:8px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.top-bar .icon{font-size:22px;line-height:1;justify-self:start}
+.top-bar h1{
+  font-family:var(--font-display);
+  font-size:1.1rem;
+  font-weight:800;
+  letter-spacing:-.02em;
+  text-align:center;
+  justify-self:center;
+}
+.top-bar .date-display{
+  font-size:.78rem;
+  font-weight:500;
+  opacity:.85;
+  text-align:right;
+  justify-self:end;
+  white-space:nowrap;
+}
+
+/* ═══════════════════════════════════════════
+   GOLD ACCENT DIVIDER
+   ═══════════════════════════════════════════ */
+.gold-divider{
+  height:3px;
+  background:linear-gradient(90deg,var(--md-gold-light),var(--md-gold),var(--md-gold-light));
+  border:none;
+}
+
+/* ═══════════════════════════════════════════
+   HERO — Verdict Card
+   ═══════════════════════════════════════════ */
+.hero{padding:24px 16px 16px;max-width:600px;margin:0 auto}
+.verdict-card{
+  border-radius:var(--md-radius-lg);
+  padding:32px 20px 28px;
+  text-align:center;
+  transition:all .5s cubic-bezier(.4,0,.2,1);
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--md-gold-light);
+}
+.verdict-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L24.5 15.5L40 20L24.5 24.5L20 40L15.5 24.5L0 20L15.5 15.5Z' fill='%238B2A2A'/%3E%3C/svg%3E");
+  background-size:28px 28px;
+  pointer-events:none;
+}
+.verdict-card::after{
+  content:'✞';
+  position:absolute;
+  top:8px;
+  right:12px;
+  font-size:.8rem;
+  opacity:.12;
+  color:var(--md-gold);
+}
+.verdict-card.yes{background:var(--verdict-green-bg);color:var(--verdict-green-text);box-shadow:0 6px 24px rgba(27,107,74,.18)}
+.verdict-card.no{background:var(--verdict-red-bg);color:var(--verdict-red-text);box-shadow:0 6px 24px rgba(139,26,26,.18)}
+
+.verdict-icon{display:block;font-size:64px;margin-bottom:4px;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+.verdict-card:hover .verdict-icon{transform:rotate(-6deg) scale(1.08)}
+
+.verdict-big{
+  font-family:var(--font-display);
+  font-size:4.5rem;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:-.04em;
+  margin:2px 0;
+}
+.verdict-label{
+  font-size:.85rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  margin-top:2px;
+}
+.verdict-sub{margin-top:12px;font-size:.9rem;opacity:.85;line-height:1.4}
+.verdict-sub .holiday-name{
+  font-weight:700;
+  display:block;
+  margin-top:4px;
+  font-size:1rem;
+}
+
+/* Washing machine animation */
+.wash-anim{margin:14px auto 0;width:80px;height:80px;position:relative}
+.wash-circle{
+  width:70px;height:70px;
+  border-radius:50%;
+  border:3px solid var(--verdict-green);
+  margin:5px auto;
+  position:relative;
+  overflow:hidden;
+  animation:washSpin 3s linear infinite;
+}
+.wash-circle::after{content:'🫧';position:absolute;font-size:24px;top:50%;left:50%;transform:translate(-50%,-50%);animation:bubble 1.5s ease-in-out infinite}
+@keyframes washSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes bubble{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7}50%{transform:translate(-50%,-60%) scale(1.15);opacity:1}}
+
+/* Sin meter */
+.sin-meter{margin:14px auto 0;max-width:200px;text-align:center}
+.sin-meter .sin-bar{height:6px;background:rgba(139,26,26,.12);border-radius:99px;overflow:hidden;margin:6px 0}
+.sin-meter .sin-fill{height:100%;background:var(--verdict-red);border-radius:99px;transition:width 1s ease}
+.sin-meter .sin-label{font-size:.75rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.05em}
+
+/* ═══════════════════════════════════════════
+   CALENDAR
+   ═══════════════════════════════════════════ */
+.calendar-container{max-width:600px;margin:0 auto 20px;padding:0 16px}
+.calendar-nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 4px 12px;
+}
+.calendar-nav button{
+  background:var(--md-surface);
+  border:1px solid var(--md-outline-variant);
+  border-radius:var(--md-radius-sm);
+  padding:6px 14px;
+  font-size:1.1rem;
+  cursor:pointer;
+  color:var(--md-on-surface);
+  transition:all .12s;
+  font-family:var(--font-body);
+  font-weight:500;
+}
+.calendar-nav button:hover{background:var(--md-surface-variant)}
+.calendar-nav .month-label{font-family:var(--font-display);font-size:1.2rem;font-weight:700}
+
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.calendar-grid .day-name{
+  text-align:center;
+  font-size:.65rem;
+  font-weight:600;
+  color:var(--md-on-surface-variant);
+  padding:6px 0;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.calendar-grid .day-cell{
+  aspect-ratio:1;
+  border-radius:var(--md-radius-sm);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.85rem;
+  font-weight:500;
+  position:relative;
+  cursor:default;
+  transition:all .12s;
+  background:transparent;
+  color:var(--md-on-surface);
+  user-select:none;
+}
+.calendar-grid .day-cell.other-month{opacity:.2}
+.calendar-grid .day-cell.red-day{
+  background:var(--md-tertiary-container);
+  color:var(--md-on-tertiary-container);
+  font-weight:700;
+  cursor:pointer;
+}
+.calendar-grid .day-cell.red-day:hover{
+  box-shadow:inset 0 0 0 2px var(--md-tertiary);
+}
+.calendar-grid .day-cell.today{
+  outline:2px solid var(--md-primary);
+  outline-offset:-2px;
+  font-weight:800;
+}
+.calendar-grid .day-cell.today.red-day{outline-color:var(--md-tertiary)}
+.calendar-grid .day-cell .red-dot{display:none}
+.calendar-grid .day-cell.red-day .red-dot{
+  display:block;
+  position:absolute;
+  top:2px;right:2px;
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--md-tertiary);
+}
+.calendar-grid .day-cell.red-day::after{content:'✞';position:absolute;bottom:1px;right:3px;font-size:.4rem;opacity:.35}
+
+.calendar-legend{
+  display:flex;
+  gap:16px;
+  padding:10px 4px 2px;
+  font-size:.75rem;
+  color:var(--md-on-surface-variant);
+}
+.calendar-legend span{display:flex;align-items:center;gap:6px}
+.calendar-legend .legend-red{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--md-tertiary-container)}
+
+/* ═══════════════════════════════════════════
+   INFO POPUP (click on red day)
+   ═══════════════════════════════════════════ */
+.popup-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  backdrop-filter:blur(4px);
+}
+.popup-overlay.active{display:flex}
+.popup-box{
+  background:var(--md-surface);
+  border-radius:var(--md-radius-md);
+  padding:28px 24px 24px;
+  max-width:340px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+  animation:popIn .3s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+  border:1px solid var(--md-gold-light);
+}
+.popup-box::before{
+  content:'✞ ✞ ✞';
+  position:absolute;
+  bottom:8px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:.5rem;
+  letter-spacing:6px;
+  opacity:.12;
+  color:var(--md-gold);
+}
+@keyframes popIn{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+.popup-box .popup-icon{font-size:48px;display:block;margin-bottom:4px}
+.popup-box h2{font-family:var(--font-display);font-size:1.3rem;font-weight:800;margin:4px 0 2px;color:var(--md-primary)}
+.popup-box .popup-date{font-size:.85rem;color:var(--md-on-surface-variant);margin-bottom:12px}
+.popup-box .popup-desc{font-size:.95rem;line-height:1.5;color:var(--md-on-surface)}
+.popup-box .popup-close{
+  display:inline-block;
+  margin-top:16px;
+  padding:8px 24px;
+  background:var(--md-primary);
+  color:var(--md-on-primary);
+  border:none;
+  border-radius:99px;
+  font-size:.85rem;
+  font-weight:600;
+  cursor:pointer;
+  font-family:var(--font-body);
+  transition:opacity .12s;
+}
+.popup-box .popup-close:hover{opacity:.85}
+
+/* ═══════════════════════════════════════════
+   SOURCES
+   ═══════════════════════════════════════════ */
+.sources{max-width:600px;margin:0 auto 16px;padding:0 16px;text-align:center}
+.sources p{font-size:.75rem;color:var(--md-on-surface-variant);line-height:1.6}
+.sources a{color:var(--md-primary);text-decoration:none;font-weight:600}
+.sources a:hover{text-decoration:underline}
+
+/* ═══════════════════════════════════════════
+   CROSS ICON DECORATION — gold
+   ═══════════════════════════════════════════ */
+.cross-deco{text-align:center;padding:6px 0 2px;font-size:1.2rem;color:var(--md-gold);letter-spacing:10px;opacity:.4}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+.footer{
+  padding:16px 16px 28px;
+  text-align:center;
+  font-size:.7rem;
+  color:var(--md-outline);
+  border-top:1px solid var(--md-outline-variant);
+  max-width:600px;
+  margin:0 auto;
+}
+.footer a{color:var(--md-primary);text-decoration:none}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media(max-width:480px){
+  .verdict-big{font-size:3rem}
+  .verdict-card{padding:24px 14px 20px}
+  .calendar-nav .month-label{font-size:1rem}
+  .top-bar h1{font-size:1rem}
+  .popup-box{padding:24px 18px 20px}
+}
+@media(min-width:768px){
+  .hero{padding:32px 16px 20px}
+  .verdict-card{padding:44px 28px 32px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP BAR ═══ -->
+<header class="top-bar">
+  <span class="icon">✞</span>
+  <h1>Дали да перам?</h1>
+  <span class="date-display" id="dateDisplay"></span>
+</header>
+<div class="gold-divider"></div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="verdict-card" id="verdictCard">
+    <span class="verdict-icon" id="verdictIcon">🧺</span>
+    <div class="verdict-big" id="verdictBig">—</div>
+    <div class="verdict-label" id="verdictLabel">Проверувам...</div>
+    <div class="verdict-sub" id="verdictSub">
+      <span id="verdictDesc">Се консултира светото писмо...</span>
+      <span class="holiday-name" id="holidayName"></span>
+    </div>
+    <div id="verdictExtra"></div>
+  </div>
+</section>
+
+<!-- ═══ CALENDAR ═══ -->
+<div class="calendar-container">
+  <div class="calendar-nav">
+    <button onclick="changeMonth(-1)">‹</button>
+    <span class="month-label" id="monthLabel"></span>
+    <button onclick="changeMonth(1)">›</button>
+  </div>
+  <div class="calendar-grid" id="calendarGrid"></div>
+  <div class="calendar-legend">
+    <span><span class="legend-red"></span> Црвен ден — греота да се пере</span>
+    <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;border:2px solid var(--md-primary);vertical-align:middle"></span> Денес</span>
+  </div>
+</div>
+
+<div class="cross-deco">✞ ✞ ✞</div>
+
+<!-- ═══ SOURCES ═══ -->
+<div class="sources">
+  <p>
+    Податоци од <a href="https://pravoslavenkalendar.mk/" target="_blank" rel="noopener">Православен календар</a>
+    и <a href="https://denovi.mk/" target="_blank" rel="noopener">Денови.мк</a>.
+    Денови со <strong>✞</strong> се црвени — кога не се работи тешка работа (ама баш и да не се пере).
+  </p>
+</div>
+
+<!-- ═══ POPUP ═══ -->
+<div class="popup-overlay" id="popupOverlay" onclick="closePopup()">
+  <div class="popup-box" onclick="event.stopPropagation()">
+    <span class="popup-icon">✞</span>
+    <h2 id="popupTitle">Празник</h2>
+    <div class="popup-date" id="popupDate">1 јануари 2026</div>
+    <div class="popup-desc" id="popupDesc">
+      Денеска е црвен ден. Не се работи тешка работа — посебно не се пере!
+    </div>
+    <button class="popup-close" onclick="closePopup()">Разбрано</button>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  🧺 <strong>ДалиДаПерам</strong> — за совесни домаќини што не сакаат да грешат.<br>
+  <span style="font-size:.65rem">(и за оние што бараат изговор да не перат денеска)</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA — Red-letter days for 2026
+// Sources: pravoslavnikalendar.mk & denovi.mk
+// Only ✞-marked and bold major feasts
+// ═══════════════════════════════════════════
+const RED_DAYS={
+  "01-05":"Свети Наум Охридски",
+  "01-06":"Бадник",
+  "01-07":"Рождество Христово — Божиќ",
+  "01-08":"Собор на Пресвета Богородица",
+  "01-09":"Св. првомаченик Стефан",
+  "01-12":"✞ Преп. Гаврил Велички",
+  "01-14":"Обрезание Господово / Св. Василиј Велики",
+  "01-18":"✞ Водокрст",
+  "01-19":"Богојавление — Водици",
+  "01-20":"Собор на Св. Јован Крстител",
+  "01-21":"Св. Григориј Охридски",
+  "01-27":"✞ Св. Сава Српски",
+  "01-28":"✞ Преп. Гаврил Лесновски / Преп. Прохор Пчински",
+  "01-29":"✞ Поклонение на веригите на ап. Петар",
+  "01-30":"✞ Преп. Антониј Велики",
+  "01-31":"✞ Св. Атанасиј Велики / Св. Кирил Александриски",
+
+  "02-07":"✞ Св. Григориј Богослов",
+  "02-08":"Свети Јосиф Солунски",
+  "02-12":"Тројцата Свети архиереи",
+  "02-14":"✞ Св. мч. Трифун",
+  "02-15":"Сретение Господово",
+  "02-16":"✞ Св. Симеон Богопримец",
+  "02-22":"Прочка — Недела на проштавање",
+  "02-23":"✞ Св. Харалампиј",
+  "02-24":"✞ Св. Георгиј Кратовски",
+  "02-27":"✞ Упокоение на Св. Кирил Солунски",
+  "02-28":"Тодорова сабота",
+
+  "03-09":"✞ Наоѓање на главата на Св. Јован Крстител",
+  "03-12":"✞ Св. мч. Агатангел Битолски",
+  "03-22":"✞ Светите 40 маченици Севастиски",
+  "03-25":"Благовештение",
+  "03-30":"✞ Свети Алексиј човек Божји",
+
+  "04-04":"Лазарова сабота",
+  "04-05":"Цветници — Влегување во Ерусалим",
+  "04-06":"Велики Понеделник",
+  "04-07":"Благовештение",
+  "04-08":"✞ Св. Архангел Гавриил",
+  "04-09":"Велики Четврток",
+  "04-10":"Велики Петок",
+  "04-11":"Велика Сабота",
+  "04-12":"ВЕЛИГДЕН — Воскресение Христово",
+  "04-13":"Велигден (втор ден)",
+  "04-14":"Велигден (трет ден)",
+  "04-17":"Источен петок — Балаклија",
+  "04-19":"✞ Упокоение на Св. Методиј Солунски",
+  "04-30":"✞ Св. Кипријан Слепченски",
+
+  "05-01":"Св. мч. Јован Нови Јанински",
+  "05-06":"Ѓурѓовден — Св. вмч. Георгиј",
+  "05-08":"✞ Св. ап. и евангелист Марко",
+  "05-12":"✞ Св. Василиј Острошки",
+  "05-13":"✞ Св. ап. Јаков",
+  "05-14":"✞ Св. пророк Еремија",
+  "05-15":"✞ Пренос на моштите на Св. Атанасиј Велики",
+  "05-21":"Спасовден — Вознесение Христово",
+  "05-22":"✞ Пренос на моштите на Св. Николај",
+  "05-24":"Св. Методиј и Кирил Рамноапостолни",
+  "05-27":"Св. Леонтиј Струмички",
+  "05-28":"✞ Преп. Гаврил Велички",
+  "05-31":"Педесетница — Слегување на Св. Дух",
+
+  "06-01":"Педесетница (втор ден)",
+  "06-02":"✞ Св. Талалеј",
+  "06-03":"Св. цар Константин и царица Елена",
+  "06-04":"✞ Св. кнез Јован Владимир",
+  "06-07":"✞ Трето наоѓање на главата на Св. Јован Крстител",
+  "06-08":"Петровденски пости",
+  "06-10":"✞ Св. Варлаам Охридски",
+  "06-15":"✞ Св. Еразмо Охридски / 20000 Охридски маченици",
+  "06-22":"✞ Св. Кирил Александриски",
+  "06-24":"✞ Св. ап. Вартоломеј",
+
+  "07-02":"✞ Св. ап. Јуда",
+  "07-03":"Преп. Наум Охридски Чудотворец",
+  "07-07":"Раѓање на Св. Јован Крстител",
+  "07-12":"Св. ап. Петар и Павле — Петровден",
+  "07-13":"✞ Собор на св. апостоли (Павловден)",
+  "07-19":"✞ Преп. Сисој Велики",
+  "07-20":"✞ Св. вмч. Недела",
+  "07-21":"✞ Св. вмч. Прокопиј",
+  "07-22":"✞ Св. Панкратиј Тавромениски",
+  "07-26":"✞ Св. Архангел Гавриил",
+  "07-30":"✞ Св. мч-ка Марина",
+
+  "08-02":"Св. пророк Илија — Илинден",
+  "08-08":"✞ Преп. мч-ка Параскева",
+  "08-09":"Св. Климент Охридски / Св. Пантелејмон",
+  "08-14":"✞ Св. Макавеи / Изнесување на Чесниот Крст",
+  "08-19":"Преображение Господово",
+  "08-28":"Успение на Пресвета Богородица",
+  "08-29":"✞ Неракотворна икона / Преп. Јоаким Осоговски",
+  "08-31":"✞ Преп. Јован Рилски",
+
+  "09-09":"✞ Преп. Пимен Велики / Св. мч. Фануриј",
+  "09-11":"Отсекување на главата на Св. Јован Крстител",
+  "09-21":"Рождество на Пресвета Богородица",
+  "09-27":"Крстовден — Воздвижение на Чесниот Крст",
+  "09-28":"✞ Св. мч. Никита",
+  "09-30":"✞ Св. Вера, Надеж, Љубов и мајка им Софија",
+
+  "10-04":"Собор на сите македонски Светители",
+  "10-09":"✞ Св. Јован Богослов",
+  "10-14":"✞ Покров на Пресвета Богородица",
+  "10-19":"✞ Св. ап. Тома",
+  "10-22":"✞ Св. ап. Јаков",
+  "10-23":"Преп. Теофил Струмички",
+  "10-26":"✞ Св. Злата Мегленска",
+  "10-27":"Преп. Параскева (Петка)",
+  "10-31":"✞ Св. ап. и евангелист Лука",
+
+  "11-01":"✞ Преп. Прохор Пчински",
+  "11-03":"Св. Иларион Мегленски",
+  "11-08":"Св. вмч. Димитриј — Митровден",
+  "11-09":"✞ Св. мч. Нестор",
+  "11-10":"Св. Параскева Петка",
+  "11-14":"✞ Св. Козма и Дамјан",
+  "11-16":"✞ Св. вмч. Георгиј — Ѓурѓиц",
+  "11-21":"Св. Архангел Михаил — Арангел",
+  "11-22":"✞ Преп. Матрона / Икона Брзопослушничка",
+  "11-24":"✞ Св. вмч. Мина",
+  "11-26":"✞ Св. Јован Златоуст",
+  "11-27":"Св. ап. Филип / Св. Григориј Палама",
+  "11-29":"✞ Св. ап. и евангелист Матеј",
+
+  "12-04":"Воведение на Пресвета Богородица",
+  "12-07":"✞ Св. вмч-ка Екатерина / Св. вмч. Меркуриј",
+  "12-08":"Св. Климент Охридски",
+  "12-09":"✞ Преп. Алимпиј Столпник / Св. вмч. Георгиј",
+  "12-11":"Св. 15 Тиверополски свештмч-ци",
+  "12-13":"Св. ап. Андреј Првоповикан",
+  "12-17":"✞ Св. вмч-ка Варвара",
+  "12-18":"✞ Преп. Нектариј Битолски",
+  "12-19":"Св. Николај Чудотворец",
+  "12-25":"✞ Св. Спиридон Тримифунтски",
+  "12-28":"✞ Св. Елевтериј",
+};
+
+const DOW_FULL=["Недела","Понеделник","Вторник","Среда","Четврток","Петок","Сабота"];
+const MONTHS=["Јануари","Февруари","Март","Април","Мај","Јуни","Јули","Август","Септември","Октомври","Ноември","Декември"];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+const today=new Date();
+let viewMonth=today.getMonth();
+let viewYear=today.getFullYear();
+const fmt=new Intl.DateTimeFormat('mk-MK',{dateStyle:'long'});
+
+function pad(n){return String(n).padStart(2,'0')}
+function dateKey(d){return pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function isRedDay(d){return RED_DAYS.hasOwnProperty(dateKey(d))}
+function getHoliday(d){return RED_DAYS[dateKey(d)]||null}
+
+// ═══════════════════════════════════════════
+// VERDICT
+// ═══════════════════════════════════════════
+function updateVerdict(){
+  const red=isRedDay(today);
+  const name=getHoliday(today);
+  const card=document.getElementById('verdictCard');
+  const icon=document.getElementById('verdictIcon');
+  const big=document.getElementById('verdictBig');
+  const label=document.getElementById('verdictLabel');
+  const sub=document.getElementById('verdictSub');
+  const hname=document.getElementById('holidayName');
+  const extra=document.getElementById('verdictExtra');
+  document.getElementById('dateDisplay').textContent=fmt.format(today);
+
+  if(red){
+    card.className='verdict-card no';
+    icon.textContent='⛔';
+    big.textContent='НЕ!';
+    label.textContent='НЕ ПЕРИ ДЕНЕСКА';
+    sub.innerHTML='<span style="opacity:.9">Денеска е <strong>црвен ден</strong> — перењето е греота!</span>';
+    hname.textContent='✞ '+name;
+    extra.innerHTML=`
+      <div class="sin-meter">
+        <div style="font-size:1.1rem;margin-bottom:2px">😇 😈</div>
+        <div class="sin-bar"><div class="sin-fill" style="width:${65+Math.random()*30}%"></div></div>
+        <div class="sin-label">% греота ако перам</div>
+      </div>`;
+  }else{
+    card.className='verdict-card yes';
+    icon.textContent='🧺';
+    big.textContent='ДА!';
+    label.textContent='СЛОБОДНО ПЕРИ';
+    sub.innerHTML='<span style="opacity:.9">Денеска нема црвен ден. Машината чека!</span>';
+    hname.textContent='';
+    extra.innerHTML='<div class="wash-anim"><div class="wash-circle"></div></div>';
+  }
+}
+
+// ═══════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════
+function renderCalendar(){
+  const grid=document.getElementById('calendarGrid');
+  document.getElementById('monthLabel').textContent=MONTHS[viewMonth]+' '+viewYear;
+  const first=new Date(viewYear,viewMonth,1);
+  const last=new Date(viewYear,viewMonth+1,0);
+  const startDow=first.getDay();
+  grid.innerHTML='';
+
+  ['Нед','Пон','Вто','Сре','Чет','Пет','Саб'].forEach(d=>{
+    const el=document.createElement('div');
+    el.className='day-name';el.textContent=d;
+    grid.appendChild(el);
+  });
+
+  for(let i=0;i<startDow;i++){
+    const prev=new Date(viewYear,viewMonth,-startDow+i+1);
+    const el=document.createElement('div');
+    el.className='day-cell other-month';el.textContent=prev.getDate();
+    grid.appendChild(el);
+  }
+
+  for(let d=1;d<=last.getDate();d++){
+    const date=new Date(viewYear,viewMonth,d);
+    const key=dateKey(date);
+    const red=!!RED_DAYS[key];
+    const isToday=date.toDateString()===today.toDateString();
+    const el=document.createElement('div');
+    el.className='day-cell';
+    if(red){el.classList.add('red-day');el.dataset.holiday=RED_DAYS[key];}
+    if(isToday)el.classList.add('today');
+    el.textContent=d;
+    if(red){const dot=document.createElement('span');dot.className='red-dot';el.appendChild(dot);}
+    el.title=red?'✞ '+RED_DAYS[key]:'';
+
+    // Click handler for red days
+    if(red){
+      el.style.cursor='pointer';
+      el.addEventListener('click',function(){
+        showPopup(date,RED_DAYS[key]);
+      });
+    }
+
+    grid.appendChild(el);
+  }
+
+  const total=startDow+last.getDate();
+  const rem=(7-(total%7))%7;
+  for(let i=1;i<=rem;i++){
+    const el=document.createElement('div');
+    el.className='day-cell other-month';el.textContent=i;
+    grid.appendChild(el);
+  }
+}
+
+function changeMonth(delta){
+  viewMonth+=delta;
+  if(viewMonth>11){viewMonth=0;viewYear++}
+  if(viewMonth<0){viewMonth=11;viewYear--}
+  renderCalendar();
+}
+
+// ═══════════════════════════════════════════
+// POPUP
+// ═══════════════════════════════════════════
+function showPopup(date,name){
+  document.getElementById('popupTitle').textContent=name;
+  document.getElementById('popupDate').textContent=
+    pad(date.getDate())+' '+MONTHS[date.getMonth()]+' '+date.getFullYear()+', '+DOW_FULL[date.getDay()];
+  document.getElementById('popupDesc').innerHTML=
+    '✞ <strong>'+name+'</strong><br><br>'
+    +'Денеска е <strong>црвен ден</strong> во православниот календар. '
+    +'Не се работи тешка работа — а перењето алишта се смета за тешка работа! 🙏';
+  document.getElementById('popupOverlay').classList.add('active');
+}
+
+function closePopup(){
+  document.getElementById('popupOverlay').classList.remove('active');
+}
+
+// Close on Escape key
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup()});
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+updateVerdict();
+renderCalendar();
+</script>
+</body>
+</html>
